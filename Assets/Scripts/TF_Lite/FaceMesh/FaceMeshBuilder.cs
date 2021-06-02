@@ -677,11 +677,33 @@ namespace TensorFlowLite
             return mesh;
         }
 
-        public static void UpdateMesh(Mesh mesh, Vector3[] faceKeypoints)
+        public static void UpdateMesh(GameObject obj, Mesh mesh, Vector3[] faceKeypoints)
         {
-            mesh.vertices = faceKeypoints;
+            Matrix4x4 trans = Matrix4x4.TRS(GetCenter(faceKeypoints), Quaternion.LookRotation(Vector3.forward), Vector3.one);
+            Vector3[] newVertices = new Vector3[faceKeypoints.Length];
+
+            obj.transform.position = GetCenter(faceKeypoints);
+
+            for(int i = 0; i < mesh.vertexCount; i++)
+            {
+                newVertices[i] = trans.inverse.MultiplyPoint(faceKeypoints[i]);
+            }
+            mesh.vertices = newVertices;
             mesh.RecalculateBounds();
             mesh.RecalculateNormals();
+        }
+
+        private static Vector3 GetCenter(Vector3[] points)
+        {
+            Vector3 center = new Vector3();
+            Vector3 sumVec = new Vector3();
+            for(int i = 0; i < points.Length; i++)
+            {
+                sumVec += points[i];
+            }
+            center = sumVec / (points.Length - 1);
+
+            return center;
         }
     }
 }

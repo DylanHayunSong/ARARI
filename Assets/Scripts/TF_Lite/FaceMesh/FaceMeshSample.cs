@@ -25,6 +25,7 @@ public sealed class FaceMeshSample : MonoBehaviour
     MeshFilter faceMeshFilter;
     Vector3[] faceKeypoints;
     FaceDetect.Result detection;
+    GameObject go = null;
 
     void Start()
     {
@@ -41,6 +42,7 @@ public sealed class FaceMeshSample : MonoBehaviour
         //});
         WebCamDevice[] devices = WebCamTexture.devices;
         string cameraName = devices[1].name;
+        //string cameraName = WebCamUtil.FindName();
         webcamTexture = new WebCamTexture(cameraName, 1280, 720, 30);
         cameraView.texture = webcamTexture;
         webcamTexture.Play();
@@ -50,7 +52,7 @@ public sealed class FaceMeshSample : MonoBehaviour
 
         // Create Face Mesh Renderer
         {
-            var go = new GameObject("Face");
+            go = new GameObject("Face");
             go.transform.SetParent(transform);
             var faceRenderer = go.AddComponent<MeshRenderer>();
             faceRenderer.material = faceMaterial;
@@ -108,31 +110,31 @@ public sealed class FaceMeshSample : MonoBehaviour
         Vector3 min = rtCorners[0];
         Vector3 max = rtCorners[2];
 
-        // Draw Face Detection
-        {
-            draw.color = Color.blue;
-            Rect rect = MathTF.Lerp(min, max, detection.rect, true);
-            draw.Rect(rect, 0.05f);
-            foreach (Vector2 p in detection.keypoints)
-            {
-                draw.Point(MathTF.Lerp(min, max, new Vector3(p.x, 1f - p.y, 0)), 0.1f);
-            }
-        }
-        draw.Apply();
+        //// Draw Face Detection
+        //{
+        //    draw.color = Color.blue;
+        //    Rect rect = MathTF.Lerp(min, max, detection.rect, true);
+        //    draw.Rect(rect, 0.05f);
+        //    foreach (Vector2 p in detection.keypoints)
+        //    {
+        //        draw.Point(MathTF.Lerp(min, max, new Vector3(p.x, 1f - p.y, 0)), 0.1f);
+        //    }
+        //}
+        //draw.Apply();
 
         // Draw face
-        draw.color = Color.green;
+        //draw.color = Color.green;
         float zScale = (max.x - min.x) / 2;
         for (int i = 0; i < face.keypoints.Length; i++)
         {
             Vector3 p = MathTF.Lerp(min, max, face.keypoints[i]);
             p.z = face.keypoints[i].z * zScale;
             faceKeypoints[i] = p;
-            draw.Point(p, 0.05f);
+            //draw.Point(p, 0.05f);
         }
-        draw.Apply();
+        //draw.Apply();
 
         // Update Mesh
-        FaceMeshBuilder.UpdateMesh(faceMeshFilter.sharedMesh, faceKeypoints);
+        FaceMeshBuilder.UpdateMesh(go, faceMeshFilter.sharedMesh, faceKeypoints);
     }
 }
