@@ -5,9 +5,7 @@ using UnityEngine;
 public class GameManager : SingletonBehaviour<GameManager>
 {
     [SerializeField]
-    private GameObject loadingImg;
-
-    private Coroutine loadingAnimRoutine;
+    public UP_GlobalPage globalPage;
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     static void Instantiate()
@@ -27,33 +25,4 @@ public class GameManager : SingletonBehaviour<GameManager>
         dataTableManager.transform.parent = gameInstance.transform;
         userDataManager.transform.parent = gameInstance.transform;
     }
-
-    public void StartLoading()
-    {
-        loadingImg.transform.parent.gameObject.SetActive(true);
-        if (loadingAnimRoutine == null)
-        {
-            loadingAnimRoutine = StartCoroutine(LoadingAnim());
-        }
-    }
-
-    public void StopLoading()
-    {
-        if(loadingAnimRoutine != null)
-        {
-            StopCoroutine(loadingAnimRoutine);
-        }
-        loadingImg.transform.parent.gameObject.SetActive(false);
-    }
-
-    private IEnumerator LoadingAnim()
-    {
-        while(true)
-        {
-            loadingImg.transform.localEulerAngles += Vector3.forward * 1f;
-            yield return new WaitForEndOfFrame();
-        }
-    }
-
-    
 }

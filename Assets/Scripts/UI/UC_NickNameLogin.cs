@@ -13,8 +13,6 @@ public class UC_NickNameLogin : UC_BaseComponent
     [SerializeField]
     private Button loginBtn;
 
-    private List<string> remoteNicknameList = new List<string>();
-
     public override void BindDelegates ()
     {
         loginBtn.onClick.AddListener(OnClick_LoginBtn);
@@ -39,19 +37,19 @@ public class UC_NickNameLogin : UC_BaseComponent
             }
         }, true);
 
-        GameManager.Instance.StartLoading();
+        GameManager.Instance.globalPage.uc_Loading.StartLoading();
         yield return new WaitWhile(() => existNicknames.Count == 0);
-        GameManager.Instance.StopLoading();
+        GameManager.Instance.globalPage.uc_Loading.StopLoading();
 
         if (existNicknames.Contains(nickName))
         {
-            Debug.Log("Success");
             UserDataManager.Instance.SetUserName(nickName);
             SceneManager.LoadScene("SelectScene");
+            GameManager.Instance.globalPage.uc_toastText.ToastOn("로그인 성공!");
         }
         else
         {
-            Debug.Log("Fail");
+            GameManager.Instance.globalPage.uc_toastText.ToastOn("로그인 실패 \n 닉네임을 확인해주세요");
         }
 
         loginBtn.interactable = true;

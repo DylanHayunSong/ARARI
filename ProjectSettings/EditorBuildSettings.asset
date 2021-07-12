@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/SubScenes/ImageTracking.unity
+    guid: 863b78d6cbfebb049b83c77af14146bf
+  - enabled: 1
     path: Assets/Scenes/Start.unity
     guid: 5847245850803104d87e2178cc6d3f73
   - enabled: 1
@@ -20,4 +23,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SubScenes/PixToPix.unity
     guid: bb7c7035a8650ef4a8129dc0e2acaf10
-  m_configObjects: {}
+  m_configObjects:
+    UnityEditor.XR.ARCore.ARCoreSettings: {fileID: 11400000, guid: 31fb6d2eda002b5469229f747e600d10, type: 2}
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 3557e8f8dd309e3429603be81b1e37f3, type: 2}
